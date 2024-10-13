@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrellita, ¿Dónde Estás?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1a1a1a; /* Fondo oscuro para no molestar a la vista */
+        }
+        canvas {
+            border: 2px solid #fff;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pianoCanvas" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('pianoCanvas');
+        const ctx = canvas.getContext('2d');
+        let notas = []; // Array para almacenar las notas en movimiento
+
+        function drawNota(note) {
+            ctx.fillStyle = 'turquoise'; // Color de la nota
+            ctx.fillRect(note.x, note.y, note.width, note.height);
+        }
+
+        function updateNotas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el lienzo
+            notas.forEach(note => {
+                note.y += note.speed; // Hacer que la nota baje
+                drawNota(note);
+            });
+            requestAnimationFrame(updateNotas); // Llamar a la función repetidamente
+        }
+
+        const cancionEstrellita = [
+            { note: 'C', time: 0 },
+            { note: 'C', time: 500 },
+            { note: 'G', time: 1000 },
+            { note: 'G', time: 1500 },
+            { note: 'A', time: 2000 },
+            { note: 'A', time: 2500 },
+            { note: 'G', time: 3000 },
+            { note: 'F', time: 3500 },
+            { note: 'F', time: 4000 },
+            { note: 'E', time: 4500 },
+            { note: 'E', time: 5000 },
+            { note: 'D', time: 5500 },
+            { note: 'D', time: 6000 },
+            { note: 'C', time: 6500 }
+        ];
+
+        function agregarNotas(cancion) {
+            const notasPorCancion = cancion; // Usar las notas de "Estrellita"
+            notasPorCancion.forEach(nota => {
+                setTimeout(() => {
+                    // Definir posición y propiedades de la nota
+                    const notePosition = { x: Math.random() * (canvas.width - 30), y: 0, width: 30, height: 30, speed: 2 };
+                    notas.push(notePosition);
+                }, nota.time);
+            });
+        }
+
+        // Iniciar la animación
+        agregarNotas(cancionEstrellita);
+        updateNotas(); // Iniciar la actualización
+    </script>
+</body>
+</html>
